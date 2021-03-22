@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../../engine/Shopware/Components/Plugin/schema/config.xsd">
+    <elements>
+        <element type="select" scope="shop">
+            <name>colo_afterpay_mode</name>
+            <label lang="de">Modus</label>
+            <label lang="en">Mode</label>
+            <value>public_sandbox</value>
+            <store>
+                <option>
+                    <value>public_sandbox</value>
+                    <label lang="de">Public Sandbox</label>
+                    <label lang="en">Public Sandbox</label>
+                </option>
+                <option>
+                    <value>sandbox</value>
+                    <label lang="de">Sandbox</label>
+                    <label lang="en">Sandbox</label>
+                </option>
+                <option>
+                    <value>prod</value>
+                    <label lang="de">Produktion</label>
+                    <label lang="en">Production</label>
+                </option>
+            </store>
+        </element>
+        <element type="boolean" scope="locale">
+            <name>colo_afterpay_auto_capture</name>
+            <label lang="de">Automatisches Capture</label>
+            <label lang="en">Autocapture</label>
+            <value>0</value>
+        </element>
+        <element type="combo" scope="shop">
+            <name>colo_afterpay_capture_status</name>
+            <label lang="de">Bestellstatus für Capture</label>
+            <label lang="en">Orderstate for capture</label>
+            <store>Shopware.apps.Base.store.OrderStatus</store>
+            <options>
+                <editable>false</editable>
+                <queryMode>remote</queryMode>
+            </options>
+        </element>
+        <element type="boolean" scope="shop">
+            <name>colo_afterpay_birthday_check</name>
+            <label lang="de">Geburtsdatum abfragen</label>
+            <label lang="en">Require birthday field</label>
+            <value>1</value>
+        </element>
+        <element type="boolean" scope="shop">
+            <name>colo_afterpay_addresses</name>
+            <label lang="de">Abweichende Lieferadresse erlauben</label>
+            <label lang="en">Allow different addresses</label>
+            <value>1</value>
+            <description></description>
+        </element>
+        <element type="boolean" scope="shop">
+            <name>colo_afterpay_tos_checkbox</name>
+            <label lang="de">AGB-Check anzeigen</label>
+            <label lang="en">Show TOS-Check</label>
+            <value>1</value>
+            <description></description>
+        </element>
+        <element type="text" scope="shop">
+            <name>colo_afterpay_campaign</name>
+            <label lang="de">Kampagnen-ID</label>
+            <label lang="en">Campaign-ID</label>
+            <value></value>
+            <description></description>
+        </element>
+        <element type="boolean" scope="shop">
+            <name>colo_afterpay_fingerprint</name>
+            <label lang="de">Profile-Tracking aktivieren</label>
+            <label lang="en">Activate profile-tracking</label>
+            <value>0</value>
+            <description lang="de">Bitte nur in Rücksprache mit Afterpay aktivieren.</description>
+            <description lang="en">Please only activate after talking to Afterpay.</description>
+        </element>
+        <element type="text" scope="shop">
+            <name>colo_afterpay_tracking_id</name>
+            <label lang="de">Tracking ID</label>
+            <label lang="en">Tracking Id</label>
+            <value></value>
+            <description></description>
+        </element>
+        <element type="select" scope="shop">
+            <name>colo_afterpay_log</name>
+            <label>Log</label>
+            <value>all</value>
+            <store>
+                <option>
+                    <value>all</value>
+                    <label lang="de">Alles</label>
+                    <label lang="en">All</label>
+                </option>
+                <option>
+                    <value>fail</value>
+                    <label lang="de">Fehler</label>
+                    <label lang="en">Failure</label>
+                </option>
+                <option>
+                    <value>none</value>
+                    <label lang="de">Nichts</label>
+                    <label lang="en">None</label>
+                </option>
+            </store>
+        </element>
+        <element type="button" scope="shop">
+            <name>colo_afterpay_test_api</name>
+            <label lang="de">Jetzt API testen</label>
+            <label lang="en">Test the API</label>
+            <value></value>
+            <description></description>
+            <options>
+                <handler><![CDATA[function () {
+                        var loadMask = new Ext.LoadMask(Ext.getBody(), {
+                            msg: "API testen...",
+                            removeMask: true
+                        });
+                        loadMask.show();
+
+                        Ext.Ajax.request({
+                            scope: this,
+                            params: this.name,
+                            url: window.location.href.substr(0, window.location.href.indexOf('backend')) + 'backend/ColoAfterpay/testapi',
+                            timeout: 60000, // 60 seconds
+                            failure: function () {
+                                loadMask.hide();
+                                loadMask.disable();
+                                Ext.Msg.alert("API testen", "Bitte stellen Sie sicher, dass das Plugin aktiviert ist");
+                            },
+                            success: function (result) {
+                                loadMask.hide();
+                                loadMask.disable();
+
+                                if (!result.responseText) {
+                                    Ext.Msg.alert("API testen", "Bitte stellen Sie sicher, dass das Plugin aktiviert ist");
+                                    return;
+                                }
+
+                                var jsonData = Ext.JSON.decode(result.responseText);
+                                Shopware.Notification.createGrowlMessage("API testen", jsonData.message);
+                            }
+                        });
+                    }//new ]]>
+                </handler>
+            </options>
+        </element>
+    </elements>
+</config>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="colo_afterpay.view_dir">%colo_afterpay.plugin_dir%/Resources/views</parameter>
+        <parameter key="colo_afterpay.components_dir">%colo_afterpay.plugin_dir%/Components/</parameter>
+    </parameters>
+
+    <services>
+        <!-- Event Subscriber -->
+        <service id="colo_afterpay.subscriber.collector.payment_methods" class="AfterPay\Subscriber\PaymentMethods">
+            <argument type="string">%colo_afterpay.components_dir%</argument>
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.frontend" class="AfterPay\Subscriber\Frontend">
+            <argument type="string">%colo_afterpay.view_dir%</argument>
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.backend" class="AfterPay\Subscriber\Backend">
+            <argument type="string">%colo_afterpay.view_dir%</argument>
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.cronjobs" class="AfterPay\Subscriber\Cronjobs">
+            <argument type="string">%colo_afterpay.view_dir%</argument>
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.entity_search" class="AfterPay\Subscriber\EntitySearch">
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.javascript" class="AfterPay\Subscriber\Javascript">
+            <argument type="string">%colo_afterpay.view_dir%</argument>
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.less" class="AfterPay\Subscriber\Less">
+            <argument type="string">%colo_afterpay.view_dir%</argument>
+            <argument type="service" id="service_container"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <service id="colo_afterpay.subscriber.collector.controller_colo_afterpay" class="AfterPay\Subscriber\ColoAfterpayController">
+            <argument type="string">%colo_afterpay.plugin_dir%</argument>
+            <argument type="string">%colo_afterpay.view_dir%</argument>
+            <argument type="service" id="template"/>
+            <tag name="shopware.event_subscriber"/>
+        </service>
+
+        <!-- Services -->
+        <service id="colo_afterpay.services.afterpay_service" class="AfterPay\Services\AfterpayService">
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="models"/>
+            <argument type="service" id="colo_afterpay.services.logger_service"/>
+        </service>
+
+        <service id="colo_afterpay.services.logger_service" class="AfterPay\Services\LoggerService">
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="pluginlogger"/>
+        </service>
+
+    </services>
+</container>

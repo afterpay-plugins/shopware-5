@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../engine/Shopware/Components/Plugin/schema/plugin.xsd">
+
+    <label lang="de">AfterPay: Rechnung, Rate, Lastschrift</label>
+    <label lang="en">AfterPay: Invoice, Installment, Direct Debit</label>
+
+    <version>2.1.14</version>
+    <copyright>Arvato Payment Solutions GmbH</copyright>
+    <license>proprietary</license>
+    <link>https://developer.afterpay.io/</link>
+    <author>COLOGNATION GmbH</author>
+    <description lang="de">Mit AfterPay können Sie den abgesicherten Kauf auf Rechnung, Lastschrift oder Ratenzahlung anbieten und Ihren Kunden ein sicheres und nutzerfreundliches Einkaufserlebnis bieten.</description>
+    <description lang="en">Offer secured open invoice, direct debit and installment as payment means for your eCommerce customers with AfterPay. Customers can try on and try out the goods at home before paying.</description>
+    <compatibility minVersion="5.2.0"/>
+
+    <requiredPlugins>
+        <requiredPlugin pluginName="Cron" minVersion="1.0.0" />
+    </requiredPlugins>
+
+    <changelog version="2.0.0">
+        <changes lang="de">Initiale Veröffentlichung.</changes>
+        <changes lang="en">Initial realease.</changes>
+    </changelog>
+
+    <changelog version="2.0.3">
+        <changes lang="de">Template-Blöcke hinzugefügt; Korrektur Capture</changes>
+        <changes lang="en">Added template blocks; Korrektur capture</changes>
+    </changelog>
+
+    <changelog version="2.0.4">
+        <changes lang="de">Korrektur Capture; Korrektur CHF Authorisierung</changes>
+        <changes lang="en">Bugfix Capture; Bugfix CHF authorization</changes>
+    </changelog>
+
+    <changelog version="2.0.5">
+        <changes lang="de">Kleine Korrekturen</changes>
+        <changes lang="en">Small bug fixes</changes>
+    </changelog>
+
+    <changelog version="2.0.6">
+        <changes lang="de">Sicherheits-Update</changes>
+        <changes lang="en">Security Fix</changes>
+    </changelog>
+
+    <changelog version="2.0.7">
+        <changes lang="de">Plugin-Konfiguration per Subshop korrigiert; Logfile Ordner geändert; Auswahl des Order-Status korrigiert</changes>
+        <changes lang="en">Plugin configs per shop fix; Log file directory change. Config order status select fix</changes>
+    </changelog>
+
+    <changelog version="2.0.8">
+        <changes lang="de">Korrektur Installationsroutine</changes>
+        <changes lang="en">Install fix</changes>
+    </changelog>
+
+    <changelog version="2.0.9">
+        <changes lang="de">Korrektur Geburtstag auf Accountseite</changes>
+        <changes lang="en">Birthday on account page fix</changes>
+    </changelog>
+
+    <changelog version="2.0.10">
+        <changes lang="de">Hinzufügen von Events AfterPay_AfterpayService_handleResponse_Success und AfterPay_AfterpayService_handleResponse_Failure</changes>
+        <changes lang="en">Adding events AfterPay_AfterpayService_handleResponse_Success and AfterPay_AfterpayService_handleResponse_Failure</changes>
+    </changelog>
+
+    <changelog version="2.0.11">
+        <changes lang="de">Kleine Korrekturen</changes>
+        <changes lang="en">Small bug fixes</changes>
+    </changelog>
+
+    <changelog version="2.0.12">
+        <changes lang="de">Kleine Korrekturen</changes>
+        <changes lang="en">Small bug fixes</changes>
+    </changelog>
+    
+    <changelog version="2.1.0">
+        <changes lang="de">Neue Profile-Tracking Integration</changes>
+        <changes lang="en">Added new profile tracking integration</changes>
+    </changelog>
+
+    <changelog version="2.1.1">
+        <changes lang="de">Hooks für Funktion "get installment"</changes>
+        <changes lang="en">Changing get installment function for hooks</changes>
+    </changelog>
+
+    <changelog version="2.1.2">
+        <changes lang="de">Korrektur für Shopware 5.5x</changes>
+        <changes lang="en">Fix for Shopware 5.5x</changes>
+    </changelog>
+
+    <changelog version="2.1.3">
+        <changes lang="de">Korrektur: Geburtstag in Zahlungsartenauswahl ändern</changes>
+        <changes lang="en">Bugfix: Birthday change on account level payment method selection</changes>
+    </changelog>
+
+    <changelog version="2.1.4">
+        <changes lang="de">Create Contract Call für Lastschrift ausgebaut; Problem mit riskobjects bei der Lastschrift Authorisierung behoben</changes>
+        <changes lang="en">Removed create contract call for direct debit. Fixed issues with riskobjects in direct debit authorization</changes>
+    </changelog>
+
+    <changelog version="2.1.5">
+        <changes lang="de">Profile Tracking Position geändert</changes>
+        <changes lang="en">Moved profile tracking postion</changes>
+    </changelog>
+
+    <changelog version="2.1.6">
+        <changes lang="de">Länder Attribute übersetzbar gemacht</changes>
+        <changes lang="en">Making country attributes translatable</changes>
+    </changelog>
+
+    <changelog version="2.1.7">
+        <changes lang="de">Profile tracking ausgeweitet wenn eingeloggt und auf register/login Seite eingebunden</changes>
+        <changes lang="en">Profile tracking on all pages when user logged in + register/login page</changes>
+    </changelog>
+
+    <changelog version="2.1.8">
+        <changes lang="de">API test Knopf in der Plugin Konfiguration</changes>
+        <changes lang="en">API test button in plugin configs</changes>
+    </changelog>
+
+    <changelog version="2.1.9">
+        <changes lang="de">Anpassungen an neue Shopware Quality Guidelines. Änderung der Plugin-Beschreibung.</changes>
+        <changes lang="en">Shopware quality guideline implementation. Changed plugin description.</changes>
+    </changelog>
+
+    <changelog version="2.1.11">
+        <changes lang="de">Telefonnummer für BE und NL übertragen.</changes>
+        <changes lang="en">Added phone number field for NL and BE.</changes>
+    </changelog>
+
+    <changelog version="2.1.12">
+        <changes lang="de">Fixes for SW 5.6</changes>
+        <changes lang="en">Fixes for SW 5.6</changes>
+    </changelog>
+
+    <changelog version="2.1.13">
+        <changes lang="de">Fix for random_bytes generation</changes>
+        <changes lang="en">Fix for random_bytes generation</changes>
+    </changelog>
+
+    <changelog version="2.1.14">
+        <changes lang="de">Changed endpoint url for private sandbox.</changes>
+        <changes lang="en">Changed endpoint url for private sandbox.</changes>
+    </changelog>
+
+</plugin>
