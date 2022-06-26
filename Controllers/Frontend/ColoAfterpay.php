@@ -121,8 +121,7 @@ class Shopware_Controllers_Frontend_ColoAfterpay extends Shopware_Controllers_Fr
             return $this->forward('cancel', null, null, array('sErrorMessage' => $message));
         }
         $iban = trim($user['additional']['payment']['data']['sSepaIban']);
-        $bic = trim($user['additional']['payment']['data']['sSepaBic']);
-        $response = $service->validateBankAccount($iban, $bic, $user);
+        $response = $service->validateBankAccount($iban, $user);
         if (!$response['success']) {
             if (empty($response['message'])) {
                 $message = $snippetManager->get('BankAccountNotValid');
@@ -135,7 +134,7 @@ class Shopware_Controllers_Frontend_ColoAfterpay extends Shopware_Controllers_Fr
 
         /*
         // Skip the sepa contract
-        $response = $service->createContract($token, $iban, $bic, $user, $basket, $paymentName);
+        $response = $service->createContract($token, $iban, $user, $basket, $paymentName);
         if (!$response['success']) {
             $message = $this->container->get('session')->offsetGet('ColoAfterpayErrorMessages');
             $this->container->get('session')->offsetUnset('ColoAfterpayErrorMessages');
@@ -192,8 +191,7 @@ class Shopware_Controllers_Frontend_ColoAfterpay extends Shopware_Controllers_Fr
             return $this->forward('cancel', null, null, array('sErrorMessage' => $message));
         }
         $iban = trim($user['additional']['payment']['data']['sSepaIban']);
-        $bic = trim($user['additional']['payment']['data']['sSepaBic']);
-        $response = $service->validateBankAccount($iban, $bic, $user);
+        $response = $service->validateBankAccount($iban, $user);
         if (!$response['success']) {
             if (empty($response['message'])) {
                 $message = $snippetManager->get('BankAccountNotValid');
@@ -203,7 +201,7 @@ class Shopware_Controllers_Frontend_ColoAfterpay extends Shopware_Controllers_Fr
             return $this->forward('cancel', null, null, array('sErrorMessage' => $message));
         }
 //        $token = $this->container->get('session')->offsetGet('ColoPaymentTempId');
-//        $response = $service->createContract($token, $iban, $bic, $user, $basket, $paymentName);
+//        $response = $service->createContract($token, $iban, $user, $basket, $paymentName);
 //        if (!$response['success']) {
 //            $message = $this->container->get('session')->offsetGet('ColoAfterpayErrorMessages');
 //            $this->container->get('session')->offsetUnset('ColoAfterpayErrorMessages');

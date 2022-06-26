@@ -146,7 +146,7 @@ class Frontend implements SubscriberInterface
 
     /**
      * Assign error messages in shippingPayment page if there are any
-     * Assigns iban and bic details for direct debit and installment payment methods
+     * Assigns iban for direct debit and installment payment methods
      *
      * @param \Enlight_Event_EventArgs $args
      * @throws \Enlight_Exception
@@ -241,7 +241,28 @@ class Frontend implements SubscriberInterface
             $service = $this->container->get('colo_afterpay.services.afterpay_service');
             $countryID = $userData['billingaddress']['countryId'];
             $coloAfterpayMerchantID = $service->getMerchantId($shop, $countryID);
-            $coloAfterpayLanguageCode = strtolower($shop->getLocale()->getLocale());
+//            $coloAfterpayLanguageCode = strtolower($shop->getLocale()->getLocale());
+            $countryShippingIso = $userData['additional']['countryShipping']['countryiso'];
+
+            switch ($countryShippingIso) {
+                case "BE":
+                    $coloAfterpayLanguageCode = 'nl_be';
+                    break;
+                case "NL":
+                    $coloAfterpayLanguageCode = 'nl_nl';
+
+                    break;
+                case "AT":
+                    $coloAfterpayLanguageCode = 'de_at';
+                    break;
+                case "DE":
+                    $coloAfterpayLanguageCode = 'de_de';
+                    break;
+                default:
+                    $coloAfterpayLanguageCode = 'en_gb';
+
+            }
+
 
             $coloAfterpayMerchantPaymentMethod = null;
             $paymentName = $userData['additional']['payment']['name'];
@@ -263,6 +284,13 @@ class Frontend implements SubscriberInterface
                 return;
             }
             $session->offsetSet('sPaymentID', $userData['additional']['payment']['id']);
+            $basket = $controller->getBasket();
+            $installments = $service->getAvailableInstallments($userData['additional']['country']['countryiso'], $basket['sAmount'], $basket['sCurrencyName']);
+            $view->assign('coloAfterpayInstallments', $installments);
+            $installmentPlan = $this->container->get('session')->offsetGet('ColoAfterpayInstallmentPlan');
+            if (!empty($installmentPlan)) {
+                $view->assign('coloAfterpaySelectedInstallment',$installmentPlan);
+            }
             $view->assign(array(
                 'coloAfterpayMerchantID' => $coloAfterpayMerchantID,
                 'coloAfterpayMerchantPaymentMethod' => $coloAfterpayMerchantPaymentMethod,
@@ -314,6 +342,13 @@ class Frontend implements SubscriberInterface
             }
             $sFormData = $view->getAssign('sFormData');
             $formData = $this->handlePaymentMethods($payments, $user, $basket, $sFormData);
+            $installments = $service->getAvailableInstallments($user['additional']['country']['countryiso'], $basket['sAmount'], $basket['sCurrencyName']);
+            $view->assign('coloAfterpayInstallments', $installments);
+            $installmentPlan = $this->container->get('session')->offsetGet('ColoAfterpayInstallmentPlan');
+            if (!empty($installmentPlan)) {
+                $view->assign('coloAfterpaySelectedInstallment',$installmentPlan);
+            }
+
             $view->assign('sFormData', $formData);
         }
     }
@@ -467,7 +502,6 @@ class Frontend implements SubscriberInterface
                     $data = $paymentClass->getCurrentPaymentDataAsArray(Shopware()->Session()->sUserId);
                     if (!empty($data)) {
                         $formData['coloAfterpayPaymentDetails'][$payment['name']]['sSepaIban'] = $data['sSepaIban'];
-                        $formData['coloAfterpayPaymentDetails'][$payment['name']]['sSepaBic'] = $data['sSepaBic'];
                     }
                 }
             }

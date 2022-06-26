@@ -2,12 +2,13 @@
 
 namespace AfterPay\Services;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Shopware\Components\Model\ModelManager;
 use AfterPay\Components\Constants;
 use AfterPay\Models\Transactions;
+use Shopware\Components\Model\ModelManager;
 use Shopware\Models\Order\Status as OrderStatus;
+use Shopware\Models\Plugin\Plugin;
 use Shopware\Models\Shop\Shop as ShopModel;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AfterpayService
 {
@@ -339,12 +340,10 @@ class AfterpayService
             }
             if (!empty($paymentName) && $paymentName === "colo_afterpay_dd") {
                 $iban = trim($user['additional']['payment']['data']['sSepaIban']);
-                $bic = trim($user['additional']['payment']['data']['sSepaBic']);
                 $data = array(
                     'payment' => array(
                         'type' => 'Invoice',
                         'directDebit' => array(
-                            'bankCode' => $bic,
                             'bankAccount' => $iban
                         )
                     )
@@ -363,7 +362,6 @@ class AfterpayService
                     return $response;
                 }
                 $iban = trim($user['additional']['payment']['data']['sSepaIban']);
-                $bic = trim($user['additional']['payment']['data']['sSepaBic']);
                 $data = array(
                     'payment' => array(
                         'type' => 'Installment',
@@ -373,7 +371,6 @@ class AfterpayService
                             'numberOfInstallments' => $installment['numberOfInstallments']
                         ),
                         'directDebit' => array(
-                            'bankCode' => $bic,
                             'bankAccount' => $iban
                         )
                     )
@@ -467,10 +464,9 @@ class AfterpayService
      * validates customer's bank account
      *
      * @param string $iban
-     * @param string $bic
      * @return array
      */
-    public function validateBankAccount($iban, $bic, $user)
+    public function validateBankAccount($iban, $user)
     {
         $response = array("success" => false);
         if (empty($this->session)) {
@@ -484,8 +480,7 @@ class AfterpayService
                 return $response;
             }
             $data = array(
-                'bankAccount' => $iban,
-                'bankCode' => $bic
+                'bankAccount' => $iban
             );
             $url = $this->apiUrl . "validate/bank-account";
             $this->logger->log($url, "info");
@@ -509,10 +504,9 @@ class AfterpayService
      *
      * @param string $token
      * @param string $iban
-     * @param string $bic
      * @return array
      */
-    public function createContract($token, $iban, $bic, $user, $basket, $paymentName = "")
+    public function createContract($token, $iban, $user, $basket, $paymentName = "")
     {
         $response = array("success" => false);
         if (empty($this->session)) {
@@ -535,16 +529,10 @@ class AfterpayService
 
                 return $response;
             }
-            if (empty($bic)) {
-                $this->logger->log("BIC is missing", "error");
-
-                return $response;
-            }
             $data = array(
                 "paymentInfo" => array(
                     "type" => "Invoice",
                     "directDebit" => array(
-                        "bankCode" => $bic,
                         "bankAccount" => $iban
                     )
                 )
@@ -885,6 +873,7 @@ class AfterpayService
         $uniqueOrdernumber = $this->generateUniqueOrdernumber();
         $data = $this->prepareCustomerData($data, $user);
         $data = $this->prepareOrderData($data, $uniqueOrdernumber, $basket);
+        $data = $this->prepareAdditionalData($data);
 
         return $data;
     }
@@ -929,7 +918,7 @@ class AfterpayService
             if ($address === "billingaddress") {
                 $data = $this->prepareRiskData($data, $user);
             }
-            if (!empty($user[$address]['phone']) && ($user['additional'][$countrySelector]['countryiso'] == "NL" OR $user['additional'][$countrySelector]['countryiso'] == "BE")) {
+            if (!empty($user[$address]['phone']) && ($user['additional'][$countrySelector]['countryiso'] == "NL" or $user['additional'][$countrySelector]['countryiso'] == "BE")) {
                 $data[$key]["mobilePhone"] = $user[$address]['phone'];
             }
         }
@@ -1027,6 +1016,22 @@ class AfterpayService
     }
 
     /**
+     * @param array $data
+     * @return array
+     */
+    private function prepareAdditionalData(array $data)
+    {
+        $data['additionalData'] = [
+            'pluginProvider' => 'COLOGNATION GmbH',
+            'pluginVersion' => $this->getPluginVersion(),
+            'shopUrl' => $this->getShopUrl(),
+            'shopPlatform' => 'Shopware 5',
+            'shopPlatformVersion' => $this->getShopwareVersion()
+        ];
+        return $data;
+    }
+
+    /**
      * Internal method which prepares capture data
      *
      * @param \Shopware\Models\Order\Order $order
@@ -1052,7 +1057,7 @@ class AfterpayService
                 "lineNumber" => $index + 1
             );
             $items[] = $item;
-            if ($maxTax < $taxRate) {
+            if ($taxRate < $taxRate) {
                 $maxTax = $taxRate;
             }
         }
@@ -1238,10 +1243,7 @@ class AfterpayService
         if (!empty($data)) {
             foreach ($data as $countryData) {
                 $countryId = $countryData['id'];
-				if (empty($countryData['objectdata'])) {
-					continue;
-				}
-                $objectdata = unserialize($countryData['objectdata'], ['allowed_classes' => false]);
+                $objectdata = unserialize($countryData['objectdata']);
                 if (isset($objectdata['__attribute_colo_afterpay_active']) && (int)$objectdata['__attribute_colo_afterpay_active'] === 1) {
                     if (!isset($countriesById[$countryId])) {
                         $countriesById[$countryId] = [
@@ -1548,6 +1550,34 @@ class AfterpayService
     }
 
     /**
+     * @return string
+     */
+    private function getShopUrl()
+    {
+        return $this->container->get('router')->assemble([
+            'module' => 'frontend',
+            'controller' => 'index'
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopwareVersion()
+    {
+        return $this->container->getParameter('shopware.release.version');
+    }
+
+    /**
+     * @return string
+     */
+    private function getPluginVersion()
+    {
+        $plugin = $this->entityManager->getRepository(Plugin::class)->findOneBy(['name' => 'AfterPay']);
+        return $plugin->getVersion();
+    }
+
+    /**
      * Internal method for generating unique ordernumber
      *
      * @param array $user
@@ -1556,17 +1586,14 @@ class AfterpayService
      */
     private function generateUniqueOrdernumber()
     {
-		$length = 8; // Will give a 16 digit string in combination with bin2hex
-		if (function_exists('random_bytes')) {
-			return bin2hex(random_bytes($length));
-		}
-		if (function_exists('mcrypt_create_iv')) {
-			return bin2hex(mcrypt_create_iv($length, MCRYPT_DEV_URANDOM));
-		}
-		if (function_exists('openssl_random_pseudo_bytes')) {
-			return bin2hex(openssl_random_pseudo_bytes($length));
-		}
-        return uniqid("", true);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 16; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        return $randomString;
     }
 
     /**
@@ -1583,8 +1610,7 @@ class AfterpayService
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
         curl_setopt($curl, CURLOPT_HEADER, 0);
         curl_setopt($curl, CURLOPT_TIMEOUT, 30);

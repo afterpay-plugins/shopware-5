@@ -24,8 +24,27 @@ class Shopware_Controllers_Frontend_ColoAfterpayCheckout extends Shopware_Contro
                     $view->loadTemplate('frontend/colo_afterpay/installments_success.tpl');
 
                     $shop = $this->container->get('shop');
-                    $coloAfterpayLanguageCode = strtolower($shop->getLocale()->getLocale());
+//                    $coloAfterpayLanguageCode = strtolower($shop->getLocale()->getLocale());
+                    $countryShippingIso = $user['additional']['countryShipping']['countryiso'];
 
+                    switch ($countryShippingIso) {
+                        case "BE":
+                            $coloAfterpayLanguageCode = 'nl_be';
+                            break;
+                        case "NL":
+                            $coloAfterpayLanguageCode = 'nl_nl';
+
+                            break;
+                        case "AT":
+                            $coloAfterpayLanguageCode = 'de_at';
+                            break;
+                        case "DE":
+                            $coloAfterpayLanguageCode = 'de_de';
+                            break;
+                        default:
+                            $coloAfterpayLanguageCode = 'en_gb';
+
+                    }
                     $countryID = $user['billingaddress']['countryId'];
                     $coloAfterpayMerchantID = $service->getMerchantId($shop, $countryID);
                     $view->assign(array(

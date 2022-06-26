@@ -16,16 +16,9 @@
            id="iban-installment"
            {if $payment_mean.id == $form_data.payment && !$maskedIban}required="required" aria-required="true"{/if}
            placeholder="{if $maskedIban}{$maskedIban}{else}{s name='PaymentSepaLabelIban'}{/s}{s name="RequiredField" namespace="frontend/register/index"}{/s}{/if}"
+           data-installments-url='{url controller=ColoAfterpayCheckout action=getInstallments isXHR=1}'
            value=""
            class="payment--field is--required{if $maskedIban} masked{/if}{if $error_flags.sSepaIban} has--error{/if}"/>
-
-    <input name="colo_afterpay_payment[{$payment_mean.name}][sSepaBic]"
-           type="text"
-           id="bic-installment"
-           {if $payment_mean.id == $form_data.payment}required="required" aria-required="true"{/if}
-           placeholder="{s name='PaymentSepaLabelBic'}{/s}{s name="RequiredField" namespace="frontend/register/index"}{/s}"
-           value="{$form_data.coloAfterpayPaymentDetails[{$payment_mean.name}].sSepaBic|escape}"
-           class="payment--field is--required{if $error_flags.sSepaBic} has--error{/if}"/>
 
     {if $ColoAfterpayConfigs['colo_afterpay_birthday_check']}
         {include file='frontend/plugins/payment/afterpay_birthday_fieldset.tpl'}

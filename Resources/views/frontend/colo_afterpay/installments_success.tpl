@@ -8,7 +8,9 @@
                  data-interest-rate='{$coloAfterpayInstallment['interestRate']}%'
                  data-effective-rate='{$coloAfterpayInstallment['effectiveInterestRate']}%'
                  data-installments-amount='{$coloAfterpayInstallment['numberOfInstallments']}'
-                 data-total-amount='{$coloAfterpayInstallment['totalAmount']|currency}'>
+                 data-total-amount='{$coloAfterpayInstallment['totalAmount']|currency}'
+                 data-total-interest-amount='{$coloAfterpayInstallment['totalInterestAmount']|currency}'>
+
                 <input class="is--hidden" type="radio" id="installment-plan-{$coloAfterpayInstallment['installmentProfileNumber']}" name="colo_afterpay_payment[colo_afterpay_installment][plan]"
                        value="{$coloAfterpayInstallment['installmentProfileNumber']}"{if (!$coloAfterpaySelectedInstallment && $smarty.foreach.installments.first) || ($coloAfterpaySelectedInstallment == $coloAfterpayInstallment['installmentProfileNumber'])} checked='checked'{/if} />
                 <label for="installment-plan-{$coloAfterpayInstallment['installmentProfileNumber']}">
@@ -41,6 +43,35 @@
                             <span class='installments--amount'>{$coloSelectedInstallment['numberOfInstallments']}</span>
                             installments.{/s}</li>
                 </ul>
+                <br>
+                <div>
+                    <small>Die Ware bleibt im Eigentum des Verkäufers bis der ausstehende Gesamtbetrag voll gezahlt wurde
+                    (Eigentumsvorbehalt). Es sind keine Versicherungen zu stellen. Die erste Monatsrate ist einen Monat
+                    nach Vereinbarung der Ratenzahlung fällig. Die darauf folgenden Raten sind in Abstanden von jeweils
+                    einem Monat fällig. Die Raten werden im Lastschriftverfahren eingezogen. . Die Option der Zahlung
+                    der in der Zusammenfassung im Checkout angezeigten Gesamtsumme (Warenkorbwert zzgl. Versandkosten)
+                    in Form der hier ausgewählten Raten (und zzgl. der angezeigten Zinskosten) hängt vom Zustandekommen
+                    des nachträglichen Teilzahlungsgeschäfts ab (hierzu naher die AfterPay AGB). Sollte das
+                    nachträgliche Teilzahlungsgeschäft nicht erfolgen, so ist die Gesamtsumme auf einmal zu zahlen und
+                    die angezeigten Zinskosten entfallen.
+                    </small>
+                </div>
+                <br>
+                <div>
+                    <small>
+                    Beispiel: <br>
+                    Bei einen Warenkorb im Wert von EUR 200,00, einem Soil-Zinssatz in Höhe von I 4,95% und einer
+                    Rückzahlung des Gesamtbetrags in I2
+                    gleichbleibenden monatlichen Raten ergibt sich ein effektiver Jahreszins in Hohe von 16,02%. Die
+                    monatlich zu zahlenden Raten betragen dann jeweils EUR I 8,05, sodass sich der Gesamtbetrag auf
+                    EUR 216,60 belauft. Bei gleichem Warenkorbwert und Soil-Zinssatz, jedoch bei Rückzahlung in 6
+                    gleichbleibenden monatlichen Raten, ergibt sich ein effektiver Jahreszins von 15,9 I %. Die
+                    monatlich zu zahlenden Raten betragen dann jeweils EUR 34,80 und der Gesamtbetrag beläuft sich auf
+                    EUR 208,80.
+                    </small>
+
+                </div>
+
                 {block name="colo_afterpay_installment_links"}
                     <div class="installment-information--links" data-modalbox="true" data-targetSelector="a" data-mode="iframe" data-height="500" data-width="750">
                         {if $sBasket.sAmount >= 200 && $coloSelectedInstallment['interestRate'] > 0}
@@ -55,6 +86,8 @@
                                 for more Information and exemplary amortisation schedules.{/s}
                         {/if}
                     </div>
+
+
                 {/block}
             </div>
         {/block}

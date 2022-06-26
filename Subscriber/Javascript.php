@@ -9,20 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Javascript implements SubscriberInterface
 {
 
-    /**
-     * @var string
-     */
-    private $viewDir;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * Subscribed events
-     * @return array
-     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -43,8 +29,8 @@ class Javascript implements SubscriberInterface
     /**
      * Provide the file collection for js files
      *
-     * @param \Enlight_Event_EventArgs $args
-     * @return ArrayCollection
+     * @param Enlight_Event_EventArgs $args
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function addJsFiles(\Enlight_Event_EventArgs $args)
     {

@@ -5,17 +5,21 @@
     <label lang="de">AfterPay: Rechnung, Rate, Lastschrift</label>
     <label lang="en">AfterPay: Invoice, Installment, Direct Debit</label>
 
-    <version>2.1.14</version>
+    <version>2.2.4</version>
     <copyright>Arvato Payment Solutions GmbH</copyright>
     <license>proprietary</license>
     <link>https://developer.afterpay.io/</link>
     <author>COLOGNATION GmbH</author>
-    <description lang="de">Mit AfterPay können Sie den abgesicherten Kauf auf Rechnung, Lastschrift oder Ratenzahlung anbieten und Ihren Kunden ein sicheres und nutzerfreundliches Einkaufserlebnis bieten.</description>
-    <description lang="en">Offer secured open invoice, direct debit and installment as payment means for your eCommerce customers with AfterPay. Customers can try on and try out the goods at home before paying.</description>
-    <compatibility minVersion="5.2.0"/>
+    <description lang="de">Mit AfterPay können Sie den abgesicherten Kauf auf Rechnung, Lastschrift oder Ratenzahlung anbieten und Ihren Kunden ein sicheres und nutzerfreundliches Einkaufserlebnis
+        bieten.
+    </description>
+    <description lang="en">Offer secured open invoice, direct debit and installment as payment means for your eCommerce customers with AfterPay. Customers can try on and try out the goods at home
+        before paying.
+    </description>
+    <compatibility minVersion="5.2.0" maxVersion="5.7.7"/>
 
     <requiredPlugins>
-        <requiredPlugin pluginName="Cron" minVersion="1.0.0" />
+        <requiredPlugin pluginName="Cron" minVersion="1.0.0"/>
     </requiredPlugins>
 
     <changelog version="2.0.0">
@@ -72,7 +76,7 @@
         <changes lang="de">Kleine Korrekturen</changes>
         <changes lang="en">Small bug fixes</changes>
     </changelog>
-    
+
     <changelog version="2.1.0">
         <changes lang="de">Neue Profile-Tracking Integration</changes>
         <changes lang="en">Added new profile tracking integration</changes>
@@ -129,18 +133,37 @@
     </changelog>
 
     <changelog version="2.1.12">
-        <changes lang="de">Fixes for SW 5.6</changes>
-        <changes lang="en">Fixes for SW 5.6</changes>
+        <changes lang="de">Bugfixes.</changes>
+        <changes lang="en">Bugfixes.</changes>
     </changelog>
 
     <changelog version="2.1.13">
-        <changes lang="de">Fix for random_bytes generation</changes>
-        <changes lang="en">Fix for random_bytes generation</changes>
+        <changes lang="de">Bugfixes.</changes>
+        <changes lang="en">Bugfixes.</changes>
     </changelog>
 
+
     <changelog version="2.1.14">
-        <changes lang="de">Changed endpoint url for private sandbox.</changes>
-        <changes lang="en">Changed endpoint url for private sandbox.</changes>
+        <changes lang="de">Bugfixes.</changes>
+        <changes lang="en">Bugfixes.</changes>
     </changelog>
+
+    <changelog version="2.2.1">
+        <changes lang="de">Neues Ratenzahlungs-Layout. Profile Tracking Änderungen.</changes>
+        <changes lang="en">New installment layout. Profile tracking changes.</changes>
+    </changelog>
+        <changelog version="2.2.2">
+        <changes lang="de">Logo geändert. BIC-Feld wurde entfernt. Ratenanzeige geändert.</changes>
+        <changes lang="en">Logo changed. BIC Field Removed. Installment Display Changes.</changes>
+    </changelog>
+    <changelog version="2.2.3">
+        <changes lang="de">Der Gesamtzinssatz wurde unter der Zusammenfassung auf der Kassenseite hinzugefügt.</changes>
+        <changes lang="en">Added total interest rate under summary on checkout page.</changes>
+    </changelog>
+    <changelog version="2.2.4">
+        <changes lang="de">Kompatibilität mit Shopware 5.7.7.</changes>
+        <changes lang="en">Compability for Shopware 5.7.7.</changes>
+    </changelog>
+
 
 </plugin>

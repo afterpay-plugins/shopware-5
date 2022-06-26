@@ -13,16 +13,6 @@ class Less implements SubscriberInterface
 {
 
     /**
-     * @var string
-     */
-    private $viewDir;
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * Subscribed events
      * @return array
      */
@@ -35,7 +25,6 @@ class Less implements SubscriberInterface
     }
 
     /**
-     * @param string $viewDir
      * @param ContainerInterface $container
      */
     public function __construct($viewDir, ContainerInterface $container)
@@ -48,7 +37,7 @@ class Less implements SubscriberInterface
      * Provide the needed less files
      *
      * @param \Enlight_Event_EventArgs $args
-     * @return ArrayCollection
+     * @return Doctrine\Common\Collections\ArrayCollection
      */
     public function addLessFiles(\Enlight_Event_EventArgs $args)
     {

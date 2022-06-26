@@ -20,8 +20,8 @@ class Shopware_Controllers_Backend_ColoAfterpay extends Shopware_Controllers_Bac
 
     public function transactionsAction()
     {
-        $start = (int)$this->Request()->getParam('start', 0);
-        $limit = (int)$this->Request()->getParam('limit', 20);
+        $start = $this->Request()->getParam('start', 0);
+        $limit = $this->Request()->getParam('limit', 20);
         $orderId = $this->Request()->getParam('orderId', null);
         if (empty($orderId)) {
             return $this->View()->assign(array('success' => false, 'data' => array(), 'total' => 0));

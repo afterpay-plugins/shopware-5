@@ -60,15 +60,28 @@
         loadInstallmentPlans: function (form) {
             var me = this,
                 $opts = me.opts;
-            var checkedRadio = form.find(".payment--method-list " + $opts.radioSelector + ":checked");
+
+            var checkedRadio = $('#iban-installment').parents('.payment--method').find('input' + ':checked');
+
             if (checkedRadio.length === 0) {
-                console.log("Radio input not found.");
+                console.log("Radio input not checked.");
                 return false;
             }
-            var installmentsUrl = checkedRadio.attr("data-installments-url");
+
+            var host = window.location .protocol + "//" + window.location.host;
+            var installmentsUrl = $('#iban-installment').attr("data-installments-url");
             if (typeof installmentsUrl === "undefined" || installmentsUrl === false) {
+                console.log('Invalid installment callback');
                 return false;
             }
+            var checkedPaymentID = checkedRadio.attr('id'); //'Afterpay Ratenzahlung';
+
+/*
+            if (checkedPaymentID != 'payment_mean9') {
+                return false;
+            }
+*/
+
             $.ajax({
                 url: installmentsUrl,
                 method: 'GET',
@@ -95,6 +108,9 @@
                         $(".installment--information").find(".effective--rate").html(plan.attr("data-effective-rate"));
                         $(".installment--information").find(".total--amount").html(plan.attr("data-total-amount"));
                         $(".installment--information").find(".installments--amount").html(plan.attr("data-installments-amount"));
+                        $(".entry--totalInterestRate").find(".entry--value").html(plan.attr("data-total-interest-amount"));
+
+
                     });
                     window.StateManager.addPlugin('.installment-information--links[data-modalbox="true"]', 'swModalbox');
                 }

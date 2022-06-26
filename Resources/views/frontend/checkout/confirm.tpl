@@ -7,7 +7,7 @@
 
 {block name="frontend_checkout_confirm_left_payment_method"}
     {$smarty.block.parent}
-    {if ($sUserData.additional.payment.name === "colo_afterpay_dd" || $sUserData.additional.payment.name === "colo_afterpay_installment") && ($sUserData.additional.payment.data.sSepaIban || $sUserData.additional.payment.data.sSepaBic)}
+    {if ($sUserData.additional.payment.name === "colo_afterpay_dd" || $sUserData.additional.payment.name === "colo_afterpay_installment") && ($sUserData.additional.payment.data.sSepaIban)}
         <div class="payment--additional-info">
             {if $sUserData.additional.payment.data.sSepaIban}
                 {if strlen($sUserData.additional.payment.data.sSepaIban) > 10}
@@ -19,10 +19,6 @@
                 <strong>{s name='PaymentSepaLabelIban' namespace='frontend/plugins/payment/sepa'}{/s}:</strong>
                 {$maskedIban}
                 <br/>
-            {/if}
-            {if $sUserData.additional.payment.data.sSepaBic}
-                <strong>{s name='PaymentSepaLabelBic' namespace='frontend/plugins/payment/sepa'}{/s}:</strong>
-                {$sUserData.additional.payment.data.sSepaBic}
             {/if}
         </div>
         <br/>

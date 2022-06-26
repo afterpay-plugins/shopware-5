@@ -32,7 +32,6 @@ class AfterpayPaymentMethod extends GenericPaymentMethod
         }
         if (in_array($this->paymentName, array("colo_afterpay_dd", "colo_afterpay_installment"))) {
             $fields[] = 'sSepaIban';
-            $fields[] = 'sSepaBic';
             if ($this->paymentName === "colo_afterpay_installment") {
                 $fields[] = 'plan';
             }
@@ -106,9 +105,7 @@ class AfterpayPaymentMethod extends GenericPaymentMethod
                 }
             }
 
-            $data = array(
-                'bic' => $this->removeAllWhitespaces($paymentData['colo_afterpay_payment'][$this->paymentName]['sSepaBic'])
-            );
+            $data = array();
             if (!(empty($iban) && $maskedIban === 1)) {
                 $data['iban'] = $iban;
             }
@@ -171,7 +168,6 @@ class AfterpayPaymentMethod extends GenericPaymentMethod
         }
         if (isset($paymentData)) {
             $arrayData["sSepaIban"] = $paymentData['iban'];
-            $arrayData["sSepaBic"] = $paymentData['bic'];
             if ($this->paymentName === "colo_afterpay_installment") {
                 $container = Shopware()->Container();
                 if ($container->initialized('session') && $container->has('session')) {
@@ -212,7 +208,6 @@ class AfterpayPaymentMethod extends GenericPaymentMethod
             'zipcode' => $addressData['zipCode'],
             'city' => $addressData['city'],
             'iban' => $paymentData['sSepaIban'],
-            'bic' => $paymentData['sSepaBic'],
             'amount' => $orderAmount,
             'created_at' => $date->format('Y-m-d')
         );

@@ -32,8 +32,6 @@ class AfterPay extends Plugin
         $this->createPaymentMethods($context);
         $this->createAttributes();
         $this->createTables();
-
-        $context->scheduleClearCache(InstallContext::CACHE_LIST_ALL);
     }
 
     /**

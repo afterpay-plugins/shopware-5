@@ -10,48 +10,48 @@
 
     <services>
         <!-- Event Subscriber -->
-        <service id="colo_afterpay.subscriber.collector.payment_methods" class="AfterPay\Subscriber\PaymentMethods">
+        <service id="colo_afterpay.subscriber.collector.payment_methods" class="AfterPay\Subscriber\PaymentMethods" public="true">
             <argument type="string">%colo_afterpay.components_dir%</argument>
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.frontend" class="AfterPay\Subscriber\Frontend">
+        <service id="colo_afterpay.subscriber.collector.frontend" class="AfterPay\Subscriber\Frontend" public="true">
             <argument type="string">%colo_afterpay.view_dir%</argument>
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.backend" class="AfterPay\Subscriber\Backend">
+        <service id="colo_afterpay.subscriber.collector.backend" class="AfterPay\Subscriber\Backend" public="true">
             <argument type="string">%colo_afterpay.view_dir%</argument>
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.cronjobs" class="AfterPay\Subscriber\Cronjobs">
+        <service id="colo_afterpay.subscriber.collector.cronjobs" class="AfterPay\Subscriber\Cronjobs" public="true">
             <argument type="string">%colo_afterpay.view_dir%</argument>
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.entity_search" class="AfterPay\Subscriber\EntitySearch">
+        <service id="colo_afterpay.subscriber.collector.entity_search" class="AfterPay\Subscriber\EntitySearch" public="true">
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.javascript" class="AfterPay\Subscriber\Javascript">
+        <service id="colo_afterpay.subscriber.collector.javascript" class="AfterPay\Subscriber\Javascript" public="true">
             <argument type="string">%colo_afterpay.view_dir%</argument>
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.less" class="AfterPay\Subscriber\Less">
+        <service id="colo_afterpay.subscriber.collector.less" class="AfterPay\Subscriber\Less" public="true">
             <argument type="string">%colo_afterpay.view_dir%</argument>
             <argument type="service" id="service_container"/>
             <tag name="shopware.event_subscriber"/>
         </service>
 
-        <service id="colo_afterpay.subscriber.collector.controller_colo_afterpay" class="AfterPay\Subscriber\ColoAfterpayController">
+        <service id="colo_afterpay.subscriber.collector.controller_colo_afterpay" class="AfterPay\Subscriber\ColoAfterpayController" public="true">
             <argument type="string">%colo_afterpay.plugin_dir%</argument>
             <argument type="string">%colo_afterpay.view_dir%</argument>
             <argument type="service" id="template"/>
@@ -59,13 +59,13 @@
         </service>
 
         <!-- Services -->
-        <service id="colo_afterpay.services.afterpay_service" class="AfterPay\Services\AfterpayService">
+        <service id="colo_afterpay.services.afterpay_service" class="AfterPay\Services\AfterpayService" public="true">
             <argument type="service" id="service_container"/>
             <argument type="service" id="models"/>
             <argument type="service" id="colo_afterpay.services.logger_service"/>
         </service>
 
-        <service id="colo_afterpay.services.logger_service" class="AfterPay\Services\LoggerService">
+        <service id="colo_afterpay.services.logger_service" class="AfterPay\Services\LoggerService" public="true">
             <argument type="service" id="service_container"/>
             <argument type="service" id="pluginlogger"/>
         </service>
